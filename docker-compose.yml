@@ -1,17 +1,21 @@
 version: '3'
 services:
+  # Apache web server
   httpd:
     image: httpd
+    # Map 8080 to default HTTP port
     ports:
       - 8080:80
+    # Map this directory to Apache's htdocs folder
     volumes:
       - .:/usr/local/apache2/htdocs/
-    links:
-      - cadvisor
+  # Google tool for monitoring system and Docker containers
   cadvisor:
     image: gcr.io/google-containers/cadvisor:latest
+    # Avoid overlap with Apache web server
     ports:
       - 8081:8080
+    # Hooks into system processes
     volumes:
       - /:/rootfs:ro 
       - /var/run:/var/run:ro
